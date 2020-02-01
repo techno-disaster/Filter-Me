@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 final Color backgroundColor = Color(0xFF332940);
@@ -127,54 +129,77 @@ class _MenuDashboardPageState extends State<MenuDashboardPage>
                   Container(
                     height: 200,
                     child: PageView(
-                      controller: PageController(viewportFraction: 0.8),
+                      controller: PageController(viewportFraction: 0.85),
                       scrollDirection: Axis.horizontal,
                       pageSnapping: true,
                       children: <Widget>[
-                        Container(
-                          decoration: BoxDecoration(
-                              image: D),
-                          child: ClipRect(
-                            child: Container(
+                        Stack(
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.only(right: 8),
+                              child: ClipRect(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0),
+                                  ),
+                                ),
+                              ),
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                        "assets/images/undraw_online_resume_qyys.png"),
+                                    fit: BoxFit.cover),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            ),
+                            Container(
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 100, vertical: 15),
                                 child: Text(
                                   "All Jobs",
                                   style: TextStyle(
-                                      fontSize: 23, color: Colors.white),
+                                      color: backgroundColor,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ),
-                          ),
-                          margin: const EdgeInsets.symmetric(horizontal: 8),
-                          color: Colors.redAccent,
-                          width: 100,
+                          ],
                         ),
-                        Container(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              "Trending",
-                              style:
-                                  TextStyle(fontSize: 23, color: Colors.white),
+                        Stack(
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.only(left: 8),
+                              child: ClipRect(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0),
+                                  ),
+                                ),
+                              ),
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                        "assets/images/undraw_friends_online_klj6.png"),
+                                    fit: BoxFit.cover),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
                             ),
-                          ),
-                          margin: const EdgeInsets.symmetric(horizontal: 8),
-                          color: Colors.blueAccent,
-                          width: 100,
-                        ),
-                        Container(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              "Recommended for you",
-                              style:
-                                  TextStyle(fontSize: 23, color: Colors.white),
+                            Container(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 90, vertical: 10),
+                                child: Text(
+                                  "For You",
+                                  style: TextStyle(
+                                      color: backgroundColor,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
                             ),
-                          ),
-                          margin: const EdgeInsets.symmetric(horizontal: 8),
-                          color: Colors.greenAccent,
-                          width: 100,
+                          ],
                         ),
                       ],
                     ),
