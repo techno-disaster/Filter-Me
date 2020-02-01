@@ -4,9 +4,12 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import 'details.dart';
+
 final Color backgroundColor = Color(0xFF332940);
 List data;
 bool isdata = false;
+int page = 1;
 
 class Home extends StatefulWidget {
   @override
@@ -32,7 +35,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
       setState(() {
         print('UI Updated');
-      
       });
     } else {
       print('Something went wrong. \nResponse Code : ${response.statusCode}');
@@ -171,28 +173,35 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                     child: PageView(
                       controller: PageController(
                         viewportFraction: 0.85,
-                        initialPage: 1,
                       ),
                       scrollDirection: Axis.horizontal,
                       pageSnapping: true,
                       children: <Widget>[
                         Stack(
                           children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(right: 8),
-                              child: ClipRect(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0),
+                            FlatButton(
+                              onPressed: () {
+                                print("pressed1");
+                                setState(() {
+                                  page = 1;
+                                });
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(right: 8),
+                                child: ClipRect(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        "assets/images/undraw_online_resume_qyys.png"),
-                                    fit: BoxFit.cover),
-                                borderRadius: BorderRadius.circular(15),
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          "assets/images/undraw_online_resume_qyys.png"),
+                                      fit: BoxFit.cover),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
                               ),
                             ),
                             Container(
@@ -212,21 +221,29 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                         ),
                         Stack(
                           children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(left: 8),
-                              child: ClipRect(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0),
+                            FlatButton(
+                              onPressed: () {
+                                print("pressed2");
+                                setState(() {
+                                  page = 2;
+                                });
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(left: 8),
+                                child: ClipRect(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        "assets/images/undraw_friends_online_klj6.png"),
-                                    fit: BoxFit.cover),
-                                borderRadius: BorderRadius.circular(15),
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          "assets/images/undraw_friends_online_klj6.png"),
+                                      fit: BoxFit.cover),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
                               ),
                             ),
                             Container(
@@ -248,10 +265,15 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                     ),
                   ),
                   SizedBox(height: 20),
-                  Text(
-                    "Jobs",
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ),
+                  page == 1
+                      ? Text(
+                          "All Jobs",
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        )
+                      : Text(
+                          "For You",
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
                   !isdata
                       ? Center(
                           child: Padding(
@@ -283,6 +305,12 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                   trailing: Text(
                                     "-2900",
                                     style: TextStyle(color: Colors.white),
+                                  ),
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DetailedView(),
+                                    ),
                                   ),
                                 );
                               },
