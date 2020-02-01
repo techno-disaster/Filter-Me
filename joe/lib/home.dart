@@ -4,8 +4,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import 'details.dart';
-
 final Color backgroundColor = Color(0xFF332940);
 List data;
 bool isdata = false;
@@ -17,7 +15,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with TickerProviderStateMixin {
-  final url = "https://resume-scraper.herokuapp.com/jobs";
+  final url = "https://resume-scraper.herokuapp.com/profiles";
   Future<void> request() async {
     var response = await http.get(
       Uri.encodeFull(url),
@@ -28,7 +26,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       data = extractdata["data"];
     });
 
-    print(data[0]["company_name"]);
+    print(data[0]["name"]);
 
     if (response.statusCode == 200) {
       isdata = true;
@@ -132,7 +130,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             scrollDirection: Axis.vertical,
             physics: ClampingScrollPhysics(),
             child: Container(
-              padding: const EdgeInsets.only(left: 16, right: 16, top: 48),
+              padding: const EdgeInsets.only(left: 16, right: 16, top: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -153,8 +151,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                           });
                         },
                       ),
-                      Text("Current Job Listings",
-                          style: TextStyle(fontSize: 24, color: Colors.white)),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20.0),
+                        child: Text("Current Applicants",
+                            style: TextStyle(fontSize: 24, color: Colors.white)),
+                      ),
                       IconButton(
                         icon: Icon(Icons.refresh),
                         onPressed: () {
@@ -167,9 +168,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                       ),
                     ],
                   ),
-                  SizedBox(height: 50),
+                  SizedBox(height: 10),
                   Container(
-                    height: 200,
+                    height: 250,
                     child: PageView(
                       controller: PageController(
                         viewportFraction: 0.85,
@@ -206,10 +207,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                             ),
                             Container(
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 109, vertical: 15),
+                                padding:
+                                    const EdgeInsets.fromLTRB(120, 10, 50, 10),
                                 child: Text(
-                                  "All Jobs",
+                                  "Applicants",
                                   style: TextStyle(
                                       color: backgroundColor,
                                       fontSize: 24,
@@ -266,9 +267,26 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   ),
                   SizedBox(height: 20),
                   page == 1
-                      ? Text(
-                          "All Jobs",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 20),
+                              child: Text(
+                                "Applicants",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 0, right: 20),
+                              child: Text(
+                                "Exp.",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 12),
+                              ),
+                            ),
+                          ],
                         )
                       : Text(
                           "For You",
@@ -294,22 +312,77 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                               shrinkWrap: true,
                               itemBuilder: (BuildContext context, index) {
                                 return ListTile(
-                                  title: Text(
-                                    data[index]["company_name"],
-                                    style: TextStyle(color: Colors.white),
+                                  title: Container(
+                                    margin: EdgeInsets.all(3),
+                                    child: Text(
+                                      data[index]["name"],
+                                      style: TextStyle(color: Colors.white),
+                                    ),
                                   ),
-                                  subtitle: Text(
-                                    data[index]["position"],
-                                    style: TextStyle(color: Colors.white),
+                                  subtitle: Row(
+                                    children: <Widget>[
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: Color.fromRGBO(
+                                                108, 99, 255, 1.0),
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(
+                                                  1000.0) //                 <--- border radius here
+                                              ),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Text(
+                                            data[index]["skills"][0],
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: Color.fromRGBO(
+                                                200, 12, 97, 1.0),
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(
+                                                  1000.0) //                 <--- border radius here
+                                              ),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Text(
+                                            data[index]["skills"][1],
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  trailing: Text(
-                                    "-2900",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => DetailedView(),
+                                  trailing: Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color:
+                                            Color.fromRGBO(108, 99, 255, 1.0),
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(
+                                              1000.0) //                 <--- border radius here
+                                          ),
+                                    ),
+                                    child: Container(
+                                      margin: EdgeInsets.all(10),
+                                      child: Text(
+                                        data[index]["experience"].toString(),
+                                        style: TextStyle(color: Colors.white),
+                                      ),
                                     ),
                                   ),
                                 );
