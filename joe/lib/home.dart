@@ -1,16 +1,45 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 final Color backgroundColor = Color(0xFF332940);
+List data;
+bool isdata = false;
 
-class MenuDashboardPage extends StatefulWidget {
+class Home extends StatefulWidget {
   @override
-  _MenuDashboardPageState createState() => _MenuDashboardPageState();
+  _HomeState createState() => _HomeState();
 }
 
-class _MenuDashboardPageState extends State<MenuDashboardPage>
-    with SingleTickerProviderStateMixin {
+class _HomeState extends State<Home> with TickerProviderStateMixin {
+  final url = "https://resume-scraper.herokuapp.com/jobs";
+  Future<void> request() async {
+    var response = await http.get(
+      Uri.encodeFull(url),
+    );
+    print(response.body);
+    setState(() {
+      var extractdata = json.decode(response.body);
+      data = extractdata["data"];
+    });
+
+    print(data[0]["company_name"]);
+
+    if (response.statusCode == 200) {
+      isdata = true;
+
+      setState(() {
+        print('UI Updated');
+      
+      });
+    } else {
+      print('Something went wrong. \nResponse Code : ${response.statusCode}');
+    }
+    print(isdata);
+  }
+
   bool isCollapsed = true;
   double screenWidth, screenHeight;
   final Duration duration = const Duration(milliseconds: 300);
@@ -21,6 +50,8 @@ class _MenuDashboardPageState extends State<MenuDashboardPage>
 
   @override
   void initState() {
+    print(isdata);
+    this.request();
     super.initState();
     _controller = AnimationController(vsync: this, duration: duration);
     _scaleAnimation = Tween<double>(begin: 1, end: 0.8).animate(_controller);
@@ -122,14 +153,26 @@ class _MenuDashboardPageState extends State<MenuDashboardPage>
                       ),
                       Text("Current Job Listings",
                           style: TextStyle(fontSize: 24, color: Colors.white)),
-                      Icon(Icons.settings, color: Colors.white),
+                      IconButton(
+                        icon: Icon(Icons.refresh),
+                        onPressed: () {
+                          request();
+                          setState(() {
+                            isdata = false;
+                          });
+                        },
+                        color: Colors.white,
+                      ),
                     ],
                   ),
                   SizedBox(height: 50),
                   Container(
                     height: 200,
                     child: PageView(
-                      controller: PageController(viewportFraction: 0.85),
+                      controller: PageController(
+                        viewportFraction: 0.85,
+                        initialPage: 1,
+                      ),
                       scrollDirection: Axis.horizontal,
                       pageSnapping: true,
                       children: <Widget>[
@@ -155,7 +198,7 @@ class _MenuDashboardPageState extends State<MenuDashboardPage>
                             Container(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 100, vertical: 15),
+                                    horizontal: 109, vertical: 15),
                                 child: Text(
                                   "All Jobs",
                                   style: TextStyle(
@@ -206,31 +249,45 @@ class _MenuDashboardPageState extends State<MenuDashboardPage>
                   ),
                   SizedBox(height: 20),
                   Text(
-                    "Transactions",
+                    "Jobs",
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
-                  Container(
-                    height: 450,
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(
-                              "Macbook",
-                              style: TextStyle(color: Colors.white),
+                  !isdata
+                      ? Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 170),
+                            child: SpinKitRing(
+                              color: Colors.white,
+                              lineWidth: 3,
+                              size: 40.0,
+                              controller: AnimationController(
+                                  vsync: this,
+                                  duration: const Duration(milliseconds: 1200)),
                             ),
-                            subtitle: Text(
-                              "Apple",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            trailing: Text(
-                              "-2900",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          );
-                        },
-                        itemCount: 10),
-                  )
+                          ),
+                        )
+                      : Container(
+                          height: 450,
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              itemBuilder: (BuildContext context, index) {
+                                return ListTile(
+                                  title: Text(
+                                    data[index]["company_name"],
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  subtitle: Text(
+                                    data[index]["position"],
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  trailing: Text(
+                                    "-2900",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                );
+                              },
+                              itemCount: data == null ? 0 : data.length),
+                        )
                 ],
               ),
             ),
