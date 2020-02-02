@@ -3,19 +3,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'checkbox.dart';
+import 'package:search_widget/search_widget.dart';
+
+import 'search.dart';
 
 final Color backgroundColor = Color(0xFF332940);
 List data;
 bool isdata = false;
+bool setpref;
 int page = 1;
+List<dynamic> recommended;
 
 class Home extends StatefulWidget {
+  bool setpref = false;
+
+  var setpreff;
+
+  Home({this.setpreff});
   @override
-  _HomeState createState() => _HomeState();
+  _HomeState createState() => _HomeState(setpref);
 }
 
 class _HomeState extends State<Home> with TickerProviderStateMixin {
-  final url = "https://resume-scraper.herokuapp.com/profiles";
+  bool setpref = false;
+
+  _HomeState(this.setpref);
+  final url = "https://a2f3cf63.ngrok.io/profiles";
   Future<void> request() async {
     var response = await http.get(
       Uri.encodeFull(url),
@@ -29,9 +43,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     print(data[0]["name"]);
 
     if (response.statusCode == 200) {
-      isdata = true;
-
       setState(() {
+        isdata = true;
         print('UI Updated');
       });
     } else {
@@ -50,7 +63,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    print(isdata);
     this.request();
     super.initState();
     _controller = AnimationController(vsync: this, duration: duration);
@@ -98,11 +110,29 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text("Dashboard",
-                    style: TextStyle(color: Colors.white, fontSize: 22)),
+                FlatButton(
+                  onPressed: () {
+                    print("D");
+                  },
+                  child: Text("Dashboard",
+                      style: TextStyle(color: Colors.white, fontSize: 22)),
+                ),
                 SizedBox(height: 10),
-                Text("Profile",
-                    style: TextStyle(color: Colors.white, fontSize: 22)),
+                FlatButton(
+                  onPressed: () {
+                    print("P");
+                    Navigator.push(
+                      (context),
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return CheckBoxScreen();
+                        },
+                      ),
+                    );
+                  },
+                  child: Text("Profile",
+                      style: TextStyle(color: Colors.white, fontSize: 22)),
+                ),
                 SizedBox(height: 10),
               ],
             ),
@@ -130,7 +160,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             scrollDirection: Axis.vertical,
             physics: ClampingScrollPhysics(),
             child: Container(
-              padding: const EdgeInsets.only(left: 16, right: 16, top: 20),
+              padding: const EdgeInsets.only(
+                  left: 16, right: 16, top: 5), //set statusbar distance here.
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -139,7 +170,26 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       InkWell(
-                        child: Icon(Icons.menu, color: Colors.white),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(15, 20, 20, 20),
+                          child: Row(
+                            children: <Widget>[
+                              Icon(Icons.menu, color: Colors.white, size: 25),
+                              IconButton(
+                                icon: Icon(Icons.search, color: Colors.white),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => HomePage(),
+                                    ),
+                                  );
+                                  print("search");
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
                         onTap: () {
                           setState(() {
                             if (isCollapsed)
@@ -152,9 +202,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                         },
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 20.0),
+                        padding: const EdgeInsets.only(left: 1.0),
                         child: Text("Current Applicants",
-                            style: TextStyle(fontSize: 24, color: Colors.white)),
+                            style:
+                                TextStyle(fontSize: 24, color: Colors.white)),
                       ),
                       IconButton(
                         icon: Icon(Icons.refresh),
@@ -170,10 +221,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   ),
                   SizedBox(height: 10),
                   Container(
-                    height: 250,
+                    height: 240,
                     child: PageView(
                       controller: PageController(
-                        viewportFraction: 0.85,
+                        viewportFraction: 0.8,
                       ),
                       scrollDirection: Axis.horizontal,
                       pageSnapping: true,
@@ -223,14 +274,41 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                         Stack(
                           children: <Widget>[
                             FlatButton(
-                              onPressed: () {
+                              onPressed: () async {
+                                List<dynamic> recommended =
+                                    await Navigator.push(
+                                  (context),
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return CheckBoxScreen();
+                                    },
+                                  ),
+                                );
+
+                                print("Home");
+                                print(recommended);
+                                print(recommended[0]);
+                                Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 170),
+                                    child: SpinKitRing(
+                                      color: Colors.white,
+                                      lineWidth: 3,
+                                      size: 40.0,
+                                      controller: AnimationController(
+                                          vsync: this,
+                                          duration: const Duration(
+                                              milliseconds: 1200)),
+                                    ),
+                                  ),
+                                );
                                 print("pressed2");
                                 setState(() {
                                   page = 2;
                                 });
+                                print(recommended);
                               },
                               child: Container(
-                                margin: EdgeInsets.only(left: 8),
                                 child: ClipRect(
                                   child: Container(
                                     decoration: BoxDecoration(
@@ -313,10 +391,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                               itemBuilder: (BuildContext context, index) {
                                 return ListTile(
                                   title: Container(
-                                    margin: EdgeInsets.all(3),
-                                    child: Text(
-                                      data[index]["name"],
-                                      style: TextStyle(color: Colors.white),
+                                    margin: EdgeInsets.all(6),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(bottom: 3),
+                                      child: Text(
+                                        data[index]["name"],
+                                        style: TextStyle(color: Colors.white),
+                                      ),
                                     ),
                                   ),
                                   subtitle: Row(
@@ -388,7 +469,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                 );
                               },
                               itemCount: data == null ? 0 : data.length),
-                        )
+                        ),
                 ],
               ),
             ),

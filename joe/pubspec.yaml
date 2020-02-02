@@ -17,7 +17,10 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
+  search_widget: ^1.0.2
   badges: ^1.1.0
+  random_color: ^1.0.3
+  dio: ^3.0.8
   http: ^0.12.0+4
   flutter_spinkit: ^4.1.1+1
   flutter:
