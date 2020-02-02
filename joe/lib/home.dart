@@ -4,7 +4,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'checkbox.dart';
-import 'package:search_widget/search_widget.dart';
 
 import 'search.dart';
 
@@ -29,7 +28,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   bool setpref = false;
 
   _HomeState(this.setpref);
-  final url = "https://a2f3cf63.ngrok.io/profiles";
+  final url = "https://c7bed7c6.ngrok.io/profiles";
   Future<void> request() async {
     var response = await http.get(
       Uri.encodeFull(url),
@@ -134,6 +133,22 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                       style: TextStyle(color: Colors.white, fontSize: 22)),
                 ),
                 SizedBox(height: 10),
+                FlatButton(
+                  onPressed: () {
+                    print("H");
+                    Navigator.push(
+                      (context),
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return HomePage();
+                        },
+                      ),
+                    );
+                  },
+                  child: Text("Hire",
+                      style: TextStyle(color: Colors.white, fontSize: 22)),
+                ),
+                SizedBox(height: 10),
               ],
             ),
           ),
@@ -221,10 +236,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   ),
                   SizedBox(height: 10),
                   Container(
-                    height: 240,
+                    height: 220,
                     child: PageView(
                       controller: PageController(
-                        viewportFraction: 0.8,
+                        viewportFraction: 0.9,
                       ),
                       scrollDirection: Axis.horizontal,
                       pageSnapping: true,
@@ -250,7 +265,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                       image: AssetImage(
-                                          "assets/images/undraw_online_resume_qyys.png"),
+                                          "assets/images/undraw_businessman_97x4.png"),
                                       fit: BoxFit.cover),
                                   borderRadius: BorderRadius.circular(15),
                                 ),
@@ -259,7 +274,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                             Container(
                               child: Padding(
                                 padding:
-                                    const EdgeInsets.fromLTRB(120, 10, 50, 10),
+                                    const EdgeInsets.fromLTRB(160, 70, 40, 10),
                                 child: Text(
                                   "Applicants",
                                   style: TextStyle(
@@ -414,7 +429,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                               ),
                                         ),
                                         child: Padding(
-                                          padding: const EdgeInsets.all(4.0),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0, vertical: 6),
                                           child: Text(
                                             data[index]["skills"][0],
                                             style:
@@ -437,7 +453,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                               ),
                                         ),
                                         child: Padding(
-                                          padding: const EdgeInsets.all(4.0),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0, vertical: 6),
                                           child: Text(
                                             data[index]["skills"][1],
                                             style:

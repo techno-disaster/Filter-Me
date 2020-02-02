@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:search_widget/search_widget.dart';
 
+import 'checkbox.dart';
+
+final Color backgroundColor = Color(0xFF332940);
 // Sets a platform override for desktop to avoid exceptions. See
 // https://flutter.dev/desktop#target-platform-override for more info.
 void enablePlatformOverrideForDesktop() {
@@ -55,14 +58,17 @@ class _HomePageState extends State<HomePage> {
     LeaderBoard("Open-CV"),
   ];
 
-  LeaderBoard   _selectedItem;
+  LeaderBoard _selectedItem;
 
   bool _show = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: AppBar(
+        backgroundColor: backgroundColor,
+        elevation: 0,
         title: const Text("Search Widget"),
       ),
       body: SingleChildScrollView(
@@ -97,11 +103,9 @@ class _HomePageState extends State<HomePage> {
                       return MyTextField(controller, focusNode);
                     },
                     onItemSelected: (item) {
-                     
                       setState(() {
                         _selectedItem = item;
                       });
-                      
                     },
                   )
                 : null,
@@ -115,14 +119,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            _show = !_show;
-          });
-        },
-        child: Icon(Icons.swap_horizontal_circle),
-      ),
+      
     );
   }
 }
@@ -164,7 +161,7 @@ class SelectedItemWidget extends StatelessWidget {
           ),
           IconButton(
             icon: Icon(Icons.delete_outline, size: 22),
-            color: Colors.grey[700],
+            color: Colors.red,
             onPressed: deleteSelectedItem,
           ),
         ],
@@ -186,11 +183,11 @@ class MyTextField extends StatelessWidget {
       child: TextField(
         controller: controller,
         focusNode: focusNode,
-        style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+        style: TextStyle(fontSize: 16, color: Colors.white60),
         decoration: InputDecoration(
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(
-              color: Color(0x4437474F),
+              color: Colors.white,
             ),
           ),
           focusedBorder: OutlineInputBorder(
@@ -199,6 +196,7 @@ class MyTextField extends StatelessWidget {
           suffixIcon: Icon(Icons.search),
           border: InputBorder.none,
           hintText: "Search here...",
+          hintStyle: TextStyle(color: Colors.white60),
           contentPadding: const EdgeInsets.only(
             left: 16,
             right: 20,
@@ -220,15 +218,12 @@ class NoItemsFound extends StatelessWidget {
         Icon(
           Icons.folder_open,
           size: 24,
-          color: Colors.grey[900].withOpacity(0.7),
+          color: Colors.white60,
         ),
         const SizedBox(width: 10),
         Text(
           "No Items Found",
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.grey[900].withOpacity(0.7),
-          ),
+          style: TextStyle(fontSize: 16, color: Colors.white60),
         ),
       ],
     );

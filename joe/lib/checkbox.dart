@@ -35,10 +35,12 @@ class _CheckBoxScreenState extends State<CheckBoxScreen>
 
   Future<void> senddata() async {
     Dio dio = new Dio();
-    converted = data.toString();
+
+    converted = data.join(',');
+    // converted = data.toString().replaceAll(' ', '').substring(4);
     print("Converted" + converted);
     response = await dio.get(
-        "https://a2f3cf63.ngrok.io/recommendations?skills=$converted"); //get req.
+        "https://c7bed7c6.ngrok.io/recommendations?skills=$converted"); //get req.
 
     if (response.statusCode == 200) {
       setState(() {
@@ -46,7 +48,7 @@ class _CheckBoxScreenState extends State<CheckBoxScreen>
         print('UI Pref Updated');
         loader = false;
       });
-      finaldata = response.data["names"];
+      finaldata = response.data["data"];
       print(response);
       Navigator.pushReplacement(
         context,
@@ -56,6 +58,9 @@ class _CheckBoxScreenState extends State<CheckBoxScreen>
         ),
       );
     } else {
+      setState(() {
+        loader = false;
+      });
       print('Something went wrong. \nResponse Code : ${response.statusCode}');
     }
   }
@@ -77,12 +82,18 @@ class _CheckBoxScreenState extends State<CheckBoxScreen>
   bool randomforest = false;
   bool matplotlib = false;
   bool angular = false;
+  bool java = false;
+  bool penetration = false;
+  bool svm = false;
 
   Widget checkbox(String title, bool boolValue) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text(title),
+        Text(
+          title,
+          style: TextStyle(color: Colors.white70),
+        ),
         Checkbox(
           value: boolValue,
           onChanged: (bool value) {
@@ -178,6 +189,21 @@ class _CheckBoxScreenState extends State<CheckBoxScreen>
                   print(data);
                   angular = value;
                   break;
+                case "Java":
+                  value ? data.add("java") : data.remove("java");
+                  print(data);
+                  java = value;
+                  break;
+                case "SVM":
+                  value ? data.add("svm") : data.remove("svm");
+                  print(data);
+                  svm = value;
+                  break;
+                case "Penetration Testing":
+                  value ? data.add("penetration") : data.remove("penetration");
+                  print(data);
+                  penetration = value;
+                  break;
               }
             });
           },
@@ -189,6 +215,12 @@ class _CheckBoxScreenState extends State<CheckBoxScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Choose required skills"),
+        backgroundColor: backgroundColor,
+        centerTitle: true,
+        elevation: 0,
+      ),
       backgroundColor: backgroundColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -234,16 +266,16 @@ class _CheckBoxScreenState extends State<CheckBoxScreen>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       checkbox(
-                        "Machine Learning",
-                        machinelearning,
-                      ),
-                      checkbox(
                         "Web",
                         web,
                       ),
                       checkbox(
                         "Numpy",
                         numpy,
+                      ),
+                      checkbox(
+                        "Machine Learning",
+                        machinelearning,
                       ),
                       checkbox(
                         "GPU",
@@ -275,17 +307,14 @@ class _CheckBoxScreenState extends State<CheckBoxScreen>
                         angular,
                       ),
                       checkbox(
-                        "React Js",
-                        reactjs,
+                        "Penetration Testing",
+                        penetration,
                       ),
                       checkbox(
-                        "Flutter",
-                        flutter,
+                        "SVM",
+                        svm,
                       ),
-                      checkbox(
-                        "php",
-                        php,
-                      ),
+                      checkbox("Java", java),
                     ],
                   ),
                 ],
