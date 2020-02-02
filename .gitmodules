@@ -1,6 +1,6 @@
 [submodule "server"]
 	path = server
 	url = https://github.com/nachiketbhuta/hackit2.0-server.git
-[submodule "flutter"]
+[submodule "Joe"]
 	path = flutter
 	url = https://github.com/Techno-Disaster/Who-is-Joe.git
