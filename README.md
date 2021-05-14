@@ -9,5 +9,6 @@ It also suggests candidates suitable for your job position taking into considera
 
 # Screenshots
 
-|![1](https://github.com/Techno-Disaster/Who-is-Joe/blob/master/assets/HiShoot_20200202_114301.png)| ![2](https://github.com/Techno-Disaster/Who-is-Joe/blob/master/assets/HiShoot_20200202_114311.png)| ![3](https://github.com/Techno-Disaster/Who-is-Joe/blob/master/assets/HiShoot_20200202_114319.png)|![4](https://github.com/Techno-Disaster/Who-is-Joe/blob/master/assets/HiShoot_20200202_114328.png)| ![5](https://github.com/Techno-Disaster/Who-is-Joe/blob/master/assets/HiShoot_20200202_114336.png)|
-|---|---|---|---|---|
+|![1](https://github.com/Techno-Disaster/Who-is-Joe/blob/master/assets/HiShoot_20200202_114301.png)| ![2](https://github.com/Techno-Disaster/Who-is-Joe/blob/master/assets/HiShoot_20200202_114311.png)| ![3](https://github.com/Techno-Disaster/Who-is-Joe/blob/master/assets/HiShoot_20200202_114319.png)|
+|---|---|---|
+|![4](https://github.com/Techno-Disaster/Who-is-Joe/blob/master/assets/HiShoot_20200202_114328.png)| ![5](https://github.com/Techno-Disaster/Who-is-Joe/blob/master/assets/HiShoot_20200202_114336.png)|
